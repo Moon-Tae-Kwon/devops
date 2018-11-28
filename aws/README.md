@@ -34,8 +34,8 @@ EC2를 이용한 인프라 환경 구축에 따른 IaC 원칙을 테스트를 �
 
 #### infra 생성 과정.
 ```
-aws ec2 create-vpc --cidr-block 10.0.0.0/16 
 #output 내용에서 Vpc-Id를 기재한다.
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
 ```
 ![awscli-create-vpc](images/awscli-create-vpc.png)
 output 내용에 너무 많아서 노출되는 형식을 linux의 grep 명령어 처럼 사용이 가능할까.?
@@ -58,13 +58,13 @@ aws ec2 create-subnet --vpc-id vpc-07743b12071217b0d --cidr-block 10.0.2.0/24
 ```
 aws ec2 create-internet-gateway
 aws ec2 attach-internet-gateway --vpc-id vpc-07743b12071217b0d --internet-gateway-id igw-0d08f0dee042dd80c
-aws ec2 create-route --route-table-id rtb-0d1fddb5b4b52e4db --destination-cidr-block 0.0.0.0/0 --gateway-id igw-0d08f0dee042dd80c 
 #route table 의 모든 트래픽(0.0.0.0/0)인터넷 게이트웨이를 가리키는 설정.
+aws ec2 create-route --route-table-id rtb-0d1fddb5b4b52e4db --destination-cidr-block 0.0.0.0/0 --gateway-id igw-0d08f0dee042dd80c
 aws ec2 describe-route-tables --route-table-id rtb-0d1fddb5b4b52e4db
-aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07743b12071217b0d" --query 'Subnets[*].{ID:SubnetId,CIDR:CidrBlock}' 
 #서브넷 ID확인하기 위한 명령문으로 많은 응용이 가능해 보인다.
-aws ec2 associate-route-table  --subnet-id subnet-075a4fc49e0b72c9d --route-table-id rtb-0d1fddb5b4b52e4db 
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07743b12071217b0d" --query 'Subnets[*].{ID:SubnetId,CIDR:CidrBlock}'
 #해당 서브넷을 퍼블릭 서브넷 으로 지정.
-aws ec2 modify-subnet-attribute --subnet-id subnet-075a4fc49e0b72c9d --map-public-ip-on-launch 
+aws ec2 associate-route-table  --subnet-id subnet-075a4fc49e0b72c9d --route-table-id rtb-0d1fddb5b4b52e4db
 #퍼블릭 IP주소를 자동으로 받도록 설정
+aws ec2 modify-subnet-attribute --subnet-id subnet-075a4fc49e0b72c9d --map-public-ip-on-launch
 ```
