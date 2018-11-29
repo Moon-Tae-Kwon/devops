@@ -6,6 +6,7 @@
 - [AWS CLI install](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-install-macos.html#awscli-install-osx-path)
 - [AWS CLI configure](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration)
 - [AWS CLI Command Reference](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html#cli-aws-ec2)
+- [AWS CLI EC2 infra setup](https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-subnets-commands-example.html)
 
 ---
 ### AWS CLI install
@@ -67,4 +68,58 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07743b12071217b0d" --
 aws ec2 associate-route-table  --subnet-id subnet-075a4fc49e0b72c9d --route-table-id rtb-0d1fddb5b4b52e4db
 #퍼블릭 IP주소를 자동으로 받도록 설정
 aws ec2 modify-subnet-attribute --subnet-id subnet-075a4fc49e0b72c9d --map-public-ip-on-launch
+```
+* 퍼블릭 서브넷에서 인스턴스 시작
+
+```
+aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
+chmod 400 MyKeyPair.pem
+# VPC 보안그룹 만들기 && Access 허용 규칙 설정
+aws ec2 create-security-group --group-name SSHAccess --description "Security group for SSH access" --vpc-id vpc-07743b12071217b0d
+aws ec2 authorize-security-group-ingress --group-id sg-0ffda041af73b8142 --protocol tcp --port 22 --cidr 0.0.0.0/0
+#인스턴스 생성
+aws ec2 run-instances --image-id ami-0b4fdb56a00adb616 --count 1 --instance-type t2.micro --key-name MyKeyPair --security-group-ids sg-0ffda041af73b8142 --subnet-id subnet-075a4fc49e0b72c9d
+#인스턴스 정보 확인.
+aws ec2 describe-instances --instance-id i-04b14a19a42fdf1de
+```
+확인된 인스턴스 정보를 이용한 SSH접근
+```
+ssh -i "MyKeyPair.pem" ec2-user@13.209.87.61
+```
+![awscli-ssh](images/awscli-ssh.png)
+![awscli-ssh-ping](images/awscli-ssh-ping.png)
+AWS Console 확인.
+![awsconsole-status](images/awsconsole.png)
+
+---
+
+정리.
+1. 인스턴스 확인 및 삭제
+```
+aws ec2 terminate-instances --instance-ids
+```
+2. 보안 그룹 삭제
+```
+aws ec2 delete-security-group --group-id
+```
+3. 서브넷 삭제
+```
+aws ec2 delete-subnet --subnet-id
+aws ec2 delete-subnet --subnet-id
+```
+4. 라우터 테이블 삭제
+```
+aws ec2 delete-route-table --route-table-id
+```
+5. VPC에서 인터넷 게이트웨이 분리
+```
+aws ec2 detach-internet-gateway --internet-gateway-id --vpc-id
+```
+6. 인터넷 게이트 웨이 삭제
+```
+aws ec2 delete-internet-gateway --internet-gateway-id
+```
+7. VPC 삭제
+```
+aws ec2 delete-vpc --vpc-id
 ```
