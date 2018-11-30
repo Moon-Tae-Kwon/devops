@@ -70,36 +70,66 @@ AWS Console 확인.
 ---
 
 정리.
-1. 인스턴스 확인 및 삭제
+1. 인스턴스 삭제
 ```
-aws ec2 terminate-instances --instance-ids
+aws ec2 terminate-instances --instance-ids i-0d5bb0e581cf7bed8 i-04b14a19a42fdf1de
 ```
 2. 보안 그룹 삭제
 ```
-aws ec2 delete-security-group --group-id
+aws ec2 delete-security-group --group-id sg-0ffda041af73b8142
+aws ec2 delete-security-group --group-id sg-006e3d837caab0bd1
 ```
 3. 서브넷 삭제
 ```
-aws ec2 delete-subnet --subnet-id
-aws ec2 delete-subnet --subnet-id
+aws ec2 delete-subnet --subnet-id subnet-075a4fc49e0b72c9d
+aws ec2 delete-subnet --subnet-id subnet-0896119e0a41155a6
 ```
-4. 라우터 테이블 삭제
+4. 라우터 테이블 삭제 (Route table이 Main일 경우에는 삭제가 되지 않음.)
 ```
-aws ec2 delete-route-table --route-table-id
+aws ec2 delete-route-table --route-table-id rtb-0d1fddb5b4b52e4db
+aws ec2 delete-route-table --route-table-id rtb-0a8f9b52ced1a40bf
 ```
 5. VPC에서 인터넷 게이트웨이 분리
 ```
-aws ec2 detach-internet-gateway --internet-gateway-id --vpc-id
+aws ec2 detach-internet-gateway --internet-gateway-id igw-0d08f0dee042dd80c --vpc-id vpc-07743b12071217b0d
 ```
 6. 인터넷 게이트 웨이 삭제
 ```
-aws ec2 delete-internet-gateway --internet-gateway-id
+aws ec2 delete-internet-gateway --internet-gateway-id igw-0d08f0dee042dd80c
 ```
 7. VPC 삭제
 ```
-aws ec2 delete-vpc --vpc-id
+aws ec2 delete-vpc --vpc-id vpc-07743b12071217b0d
 ```
 
 ---
 
 AWS EC2의 관리대장 및 리소스관리를 진행할 경우에는 위의 리소스 생성 이후 하나하나의 Id를 기재할수가 없을것으로 생각되어 리소스를 파악할수 있는 스크립트를 추가로 작성해 보았습니다.
+
+스크립트 작성전에 확인 했던 AWSCLI 명령어를 통한 EC2 리소스 정보를 확인하기 위한 명령어를 아래와 같이 정리 했습니다.
+
+1. 인스턴스 상세 확인
+```
+aws ec2 describe-instances --query 'Reservations[].Instances[].[[Tags[?Key==`Name`].Value][0][0], InstanceId, InstanceType, PrivateIpAddress, PublicIpAddress, VpcId, SubnetId, SecurityGroups[].GroupName[],SecurityGroups[].GroupId[], BlockDeviceMappings[].Ebs[].VolumeId[]]' --output text
+```
+![ec2-info1](images/ec2-info1.png)
+2. Vpc 상세 확인
+```
+aws ec2 describe-vpcs --query 'Vpcs[].[CidrBlock, VpcId]' --output text
+```
+![ec2-info2](images/ec2-info2.png)
+3. Subnet 상세 확인
+```
+aws ec2 describe-subnets --query 'Subnets[].[AvailabilityZone, CidrBlock, SubnetId, VpcId, SubnetArn]' --output text
+```
+![ec2-info3](images/ec2-info3.png)
+4. Route table 상세 확인
+```
+aws ec2 describe-route-tables --query 'RouteTables[].[[Tags[?Key==`Name`].Value][0][0], RouteTableId, Routes, Associations[].SubnetId[]]' --output text
+```
+![ec2-info4](images/ec2-info4.png)
+5. InternetGateway 상세 확인.
+```
+aws ec2 describe-internet-gateways --query 'InternetGateways[].[[Tags[?Key==`Name`].Value][0][0], Attachments[].VpcId[], InternetGatewayId]' --output text
+```
+![ec2-info5](images/ec2-info5.png)
