@@ -9,6 +9,7 @@
     * [docker in docker (18.11.26)](https://github.com/dev-chulbuji/DevOps_Seongnam/blob/master/docker_paas/docker-in-docker/README.md)
     * [docker outside of docker (18.11.27)](https://github.com/dev-chulbuji/DevOps_Seongnam/blob/master/docker_paas/docker-outside-of-docker/README.md)
     * [AWS CLI Command (18.11.28 ~)](https://github.com/Moon-Tae-Kwon/devops/tree/master/aws/README.md)
+    * [Python (18.12.03 ~)](https://github.com/Moon-Tae-Kwon/devops/tree/master/python/README.md)
 
 ---
 ## reference book && reference link
@@ -17,6 +18,8 @@
 - [The DevOps Handnook](http://www.yes24.com/24/goods/61792775?scode=029)
 - [AWS를 이용한 데브옵스 완벽 구축](http://www.yes24.com/24/goods/60637650?scode=029)
 - [앤서블 철저 입문](http://www.yes24.com/24/goods/55227544?scode=029)
+- [파이썬 3.2 프로그래밍](http://www.yes24.com/24/goods/6687985?scode=029)
+- [헬로! 파이썬 프로그래밍](http://www.yes24.com/24/goods/20104204?scode=029)
 
 ### docker  
 - [docker wiki](https://en.wikipedia.org/wiki/Docker_(software)) 
