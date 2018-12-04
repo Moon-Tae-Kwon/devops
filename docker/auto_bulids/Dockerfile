@@ -11,7 +11,7 @@ RUN apt-get -y install apache2
 
 # index.html 파일 내용 변경
 RUN mv /var/www/html/index.html /var/www/html/index.html_old
-RUN touch /var/www/html/index.html && echo "Moon dockerfile test" >> /var/www/html/index.html
+RUN touch /var/www/html/index.html && echo "Moon dockerfile test11" >> /var/www/html/index.html
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # EXPOSE - 호스트와 연결할 포트 번호
 EXPOSE 80
