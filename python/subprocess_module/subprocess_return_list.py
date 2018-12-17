@@ -13,6 +13,7 @@ nowtime = now.strftime('%H:%M:%S')
 nowdatetime = now.strftime('%Y-%m-%d %H:%M:%S')
 
 #EC2 infra 정보 / 리턴값
+#instance_info = "aws ec2 describe-instances --query 'Reservations[].Instances[].[[Tags[?Key==`Name`].Value][0][0], InstanceId, InstanceType, PrivateIpAddress, PublicIpAddress, VpcId, SubnetId, SecurityGroups[].GroupName[],SecurityGroups[].GroupId[], BlockDeviceMappings[].Ebs[].VolumeId[]]' --output text"
 instance_info = "aws ec2 describe-instances --query 'Reservations[].Instances[].[[Tags[?Key==`Name`].Value][0][0], InstanceId, InstanceType, PrivateIpAddress, PublicIpAddress, VpcId, SubnetId, SecurityGroups[].GroupName[],SecurityGroups[].GroupId[], BlockDeviceMappings[].Ebs[].VolumeId[]]' --output text"
 instance_return = subprocess.check_output(instance_info, shell=True)
 vpc_info = "aws ec2 describe-vpcs --query 'Vpcs[].[CidrBlock, VpcId]' --output text"

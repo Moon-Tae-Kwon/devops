@@ -10,6 +10,7 @@
     * [docker outside of docker (18.11.27)](https://github.com/dev-chulbuji/DevOps_Seongnam/blob/master/docker_paas/docker-outside-of-docker/README.md)
     * [AWS CLI Command (18.11.28 ~)](https://github.com/Moon-Tae-Kwon/devops/tree/master/aws/README.md)
     * [Python (18.12.03 ~)](https://github.com/Moon-Tae-Kwon/devops/tree/master/python/README.md)
+    * [jenkins-dood(github-auto-build) (18.12.11)](https://github.com/dev-chulbuji/DevOps_Seongnam/tree/master/docker_auto_build_jenkins)
 
 ---
 ## reference book && reference link
@@ -28,3 +29,6 @@
 
 ### docker hub  
 - [Overview of Docker Hub](https://docs.docker.com/docker-hub/)
+
+### jenkins
+- [jenkins wiki](https://en.wikipedia.org/wiki/Jenkins_(software))
